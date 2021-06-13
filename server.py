@@ -81,7 +81,8 @@ class Server:
 
     def run(self):
         while True:
-            command = input(">>> ")
+            header = self.dataReceive()
+            command = input(f"{colorama.Fore.LIGHTBLUE_EX}{header}{colorama.Style.RESET_ALL}")
             command = command.split(" ", 1)
             try:
                 if command[0] == "upload":
