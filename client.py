@@ -1,4 +1,4 @@
-import socket, subprocess, time, json, os, base64, ctypes, os, sys, re
+import socket, subprocess, time, json, os, base64, ctypes, os, sys
 
 ctypes.windll.user32.MessageBoxW(
     0,

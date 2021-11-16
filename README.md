@@ -1,18 +1,39 @@
-[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source-150x25.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-# Windows-Python-RAT
-Windows Remote Access Tool with support for uploads, downloads and fun commands. Written in Python.
+[![Stargazers][stars-shield]][stars-url]
 
-# Disclaimer
-Don't use this program unless you have permission from the client
+## About
 
-# Usage
+Windows Remote Access Tool with support for uploads, downloads and fun commands.
 
-Run the command below to install the imports
-```
-pip install -r requirements.txt
-```
+### Built With
 
-- Run client.py on the PC you need to remote access, fill the ports and IP out with your own.
-- Run server.py on the PC you're remote controlling from, fill the ports and IP out with your own.
+* [Python 3](https://www.python.org/)
+* [Colorama](https://github.com/tartley/colorama)
+
+### Prerequisites
+
+* colorama
+  ```sh
+  pip install colorama
+  ```
+
+### Setup
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/k200-dev/Windows-Python-RAT/
+   ```
+2. Fill in the values in `client.py` and `server.py`
+   ```python
+   ratClient = RATConnector("ENTER IP ADDRESS", ENTER PORT)
+   activeServer = Server("ENTER IP ADDRESS", ENTER PORT)
+   ```
+
+## Usage
+
+Run `server.py` on your local machine and `client.py` on the target machine.
+Run `ratHelp` in the terminal to see a list of commands
+
+![Image of the RAT server](https://files.k200.site/github-Windows-Python-RAT-example.png)
+
+[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
+[stars-url]: https://github.com/k200-dev/Windows-Python-RAT/stargazers
