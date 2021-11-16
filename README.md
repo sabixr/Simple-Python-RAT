@@ -35,5 +35,5 @@ Run `ratHelp` in the terminal to see a list of commands
 
 ![Image of the RAT server](https://files.k200.site/github-Windows-Python-RAT-example.png)
 
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/k200-dev/Windows-Python-RAT/stargazers
+[stars-shield]: https://img.shields.io/github/stars/k200-dev/Simple-Python-RAT.svg?style=for-the-badge
+[stars-url]: https://github.com/k200-dev/Simple-Python-RAT/stargazers
