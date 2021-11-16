@@ -4,6 +4,10 @@
 
 Windows Remote Access Tool with support for uploads, downloads and fun commands.
 
+## Disclaimer
+
+This tools is for educational purposes only. Do not use this unless you have permission
+
 ### Built With
 
 * [Python 3](https://www.python.org/)
